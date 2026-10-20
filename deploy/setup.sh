@@ -1,51 +1,66 @@
 #!/usr/bin/env bash
-# 《夜班守则》CrewAI — Vultr VPS 一键部署
-# 用法：在新 VPS 上执行 bash setup.sh
+# AI Short Drama Dream Team — VPS one-click deploy
+# Usage: bash setup.sh on a fresh VPS
 set -euo pipefail
 
-echo "=== 1/5 系统更新 ==="
+REPO_URL="https://github.com/dkooou/crewai-drama.git"
+INSTALL_DIR="$HOME/nightshift-crew"
+
+echo "=== 1/6 System update ==="
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y python3.12 python3.12-venv python3-pip git
 
-echo "=== 2/5 克隆代码 ==="
-cd ~
-if [ -d "nightshift-crew" ]; then
-    cd nightshift-crew && git pull
+echo "=== 2/6 Clone repo ==="
+if [ -d "$INSTALL_DIR" ]; then
+    cd "$INSTALL_DIR" && git pull
 else
-    git clone https://github.com/你的用户名/nightshift-crew.git
-    cd nightshift-crew
+    git clone "$REPO_URL" "$INSTALL_DIR"
+    cd "$INSTALL_DIR"
 fi
 
-echo "=== 3/5 创建虚拟环境 & 安装依赖 ==="
+echo "=== 3/6 Create venv & install ==="
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 
-echo "=== 4/5 配置环境变量 ==="
+echo "=== 4/6 Configure environment ==="
 if [ ! -f .env ]; then
     cp .env.example .env
     echo ""
-    echo "⚠️  请编辑 .env 填入你的 key："
-    echo "    nano ~/nightshift-crew/.env"
+    echo "⚠️  Edit .env and fill in your keys:"
+    echo "    nano $INSTALL_DIR/.env"
     echo ""
-    echo "需要填写："
+    echo "Required:"
     echo "  - OPENROUTER_API_KEY"
-    echo "  - TELEGRAM_BOT_TOKEN（从 @BotFather 获取）"
-    echo "  - ALLOWED_USER_IDS（你的 Telegram 用户 ID）"
+    echo "  - TELEGRAM_BOT_TOKEN (from @BotFather)"
+    echo "  - ALLOWED_USER_IDS (your Telegram user ID)"
+    echo "  - TAVILY_API_KEY (from tavily.com)"
     echo ""
 fi
 
-echo "=== 5/5 安装 systemd 服务 ==="
+echo "=== 5/6 Install systemd services ==="
 sudo cp deploy/nightshift-bot.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable nightshift-bot
 
+echo "=== 6/6 Setup intelligence cron ==="
+mkdir -p "$INSTALL_DIR/knowledge_base"/{daily,weekly,monthly,library}
+
+CRON_CMD="cd $INSTALL_DIR && source .venv/bin/activate && nightshift-intel"
+CRON_LINE="0 9 * * * $CRON_CMD >> $INSTALL_DIR/knowledge_base/cron.log 2>&1"
+
+(crontab -l 2>/dev/null | grep -v "nightshift-intel" ; echo "$CRON_LINE") | crontab -
+
 echo ""
-echo "✅ 部署完成！"
+echo "✅ Deploy complete!"
 echo ""
-echo "接下来："
-echo "  1. 编辑 .env：    nano ~/nightshift-crew/.env"
-echo "  2. 启动 bot：     sudo systemctl start nightshift-bot"
-echo "  3. 查看日志：     journalctl -u nightshift-bot -f"
-echo "  4. SSH 直接跑：   cd ~/nightshift-crew && source .venv/bin/activate && nightshift"
+echo "Next steps:"
+echo "  1. Edit .env:        nano $INSTALL_DIR/.env"
+echo "  2. Start bot:        sudo systemctl start nightshift-bot"
+echo "  3. View logs:        journalctl -u nightshift-bot -f"
+echo "  4. SSH direct run:   cd $INSTALL_DIR && source .venv/bin/activate && nightshift \"your task\""
+echo "  5. Test intel:       cd $INSTALL_DIR && source .venv/bin/activate && nightshift-intel"
+echo ""
+echo "Intelligence cron: daily at 09:00 UTC"
+echo "Knowledge base:    $INSTALL_DIR/knowledge_base/"
 echo ""

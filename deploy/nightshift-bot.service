@@ -1,5 +1,5 @@
 [Unit]
-Description=夜班守则 Telegram Bot
+Description=AI Drama Dream Team Telegram Bot
 After=network.target
 
 [Service]

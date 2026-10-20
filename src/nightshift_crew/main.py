@@ -1,4 +1,4 @@
-"""入口：命令行运行创作 Crew"""
+"""CLI entry — run the dream team with any prompt."""
 
 import sys
 
@@ -8,13 +8,13 @@ from nightshift_crew.crew import NightshiftCrew
 def run():
     prompt = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else None
     if not prompt:
-        print("用法：nightshift <你的任务>")
+        print("Usage: nightshift <your task>")
         print()
-        print("示例：")
-        print('  nightshift "设计 Day 2 的游戏机制，要求测试证据协作能力"')
-        print('  nightshift "写一个场景：Day 6 终局，女友主动握住笔"')
-        print('  nightshift "讨论：锚定后的意识状态应该怎么设定"')
-        print('  nightshift "这个设定有没有逻辑漏洞：入侵者必须骗你违规才能攻击"')
+        print("Examples:")
+        print('  nightshift "Design the season arc for a rule-horror series set in an office building"')
+        print('  nightshift "Write the opening scene of E3: the protagonist discovers the lock has changed"')
+        print('  nightshift "Review this premise for logic holes: the entity can only enter through open doors"')
+        print('  nightshift "What horror short dramas are trending on TikTok this week?"')
         sys.exit(0)
 
     result = NightshiftCrew().crew().kickoff(inputs={"prompt": prompt})

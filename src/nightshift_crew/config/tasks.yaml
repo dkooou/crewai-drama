@@ -1,20 +1,17 @@
-# 创作团队任务模板
-# 只有一个通用任务：你发什么，crew 就做什么
-# 所有具体需求通过 {prompt} 变量传入
+# Universal task template
+# The manager reads the prompt and routes to the right agents.
+# All specific requirements come through the {prompt} variable.
 
-# ─────────────────────────────────────────
-# 通用创作任务
-# crew 总管会根据 prompt 内容自动分配给合适的角色
-# ─────────────────────────────────────────
 creative_task:
   description: >
     {prompt}
 
-    要求：
-    - 中文输出
-    - 如果涉及多个方案，给出对比和推荐
-    - 如果涉及具体场景，用剧本格式（场景描述+对白+动作指示）
-    - 对白口语化、短句
+    Requirements:
+    - Output in English (unless the user explicitly asks for Chinese)
+    - If multiple approaches exist, compare them and recommend one
+    - If writing a scene, use screenplay format (scene description + dialogue + action lines)
+    - Dialogue must sound natural — like real people talking, not translated text
+    - When referencing the Story Bible or prior episodes, cite specific details
   expected_output: >
-    针对上述任务的完整产出。中文。
-  agent: screenwriter
+    Complete deliverable addressing the task above. In English.
+  agent: scene_writer
