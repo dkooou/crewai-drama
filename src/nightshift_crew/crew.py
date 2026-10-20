@@ -1,5 +1,7 @@
 """Dream Team Crew — 13 specialized agents for AI short drama production."""
 
+import os
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import TavilySearchTool
@@ -95,6 +97,13 @@ class NightshiftCrew:
             tasks=self.tasks,
             process=Process.hierarchical,
             manager_llm="openrouter/anthropic/claude-opus-4-6",
-            memory=False,
+            memory=True,
+            embedder={
+                "provider": "openai",
+                "config": {
+                    "model": "text-embedding-3-small",
+                    "api_key": os.getenv("OPENAI_API_KEY"),
+                },
+            },
             verbose=True,
         )
