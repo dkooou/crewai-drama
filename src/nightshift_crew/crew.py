@@ -1,7 +1,5 @@
 """Dream Team Crew — 13 specialized agents for AI short drama production."""
 
-import os
-
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import TavilySearchTool
@@ -99,11 +97,10 @@ class NightshiftCrew:
             manager_llm="openrouter/anthropic/claude-opus-4-6",
             memory=True,
             embedder={
-                "provider": "huggingface",
+                "provider": "ollama",
                 "config": {
-                    "model": "sentence-transformers/all-MiniLM-L6-v2",
-                    "api_url": "https://router.huggingface.co/hf-inference/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2",
-                    "api_key": os.getenv("CHROMA_HUGGINGFACE_API_KEY", ""),
+                    "model": "all-minilm",
+                    "url": "http://localhost:11434",
                 },
             },
             verbose=True,
