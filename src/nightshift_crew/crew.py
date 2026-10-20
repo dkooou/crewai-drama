@@ -1,4 +1,4 @@
-"""《夜班守则》创作 Crew — 装配逻辑"""
+"""创作 Crew — 装配逻辑"""
 
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
@@ -6,12 +6,10 @@ from crewai.project import CrewBase, agent, crew, task
 
 @CrewBase
 class NightshiftCrew:
-    """三角色创作团队 + 自动总管（hierarchical模式）"""
+    """三角色创作团队 + 自动总管"""
 
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
-
-    # ── Agents ──────────────────────────────────
 
     @agent
     def screenwriter(self) -> Agent:
@@ -25,29 +23,9 @@ class NightshiftCrew:
     def story_auditor(self) -> Agent:
         return Agent(config=self.agents_config["story_auditor"])
 
-    # ── Tasks ───────────────────────────────────
-
     @task
-    def game_mechanism_design(self) -> Task:
-        return Task(config=self.tasks_config["game_mechanism_design"])
-
-    @task
-    def visual_breakdown(self) -> Task:
-        return Task(config=self.tasks_config["visual_breakdown"])
-
-    @task
-    def story_audit(self) -> Task:
-        return Task(config=self.tasks_config["story_audit"])
-
-    @task
-    def scene_creation(self) -> Task:
-        return Task(config=self.tasks_config["scene_creation"])
-
-    @task
-    def worldbuilding_discuss(self) -> Task:
-        return Task(config=self.tasks_config["worldbuilding_discuss"])
-
-    # ── Crew ────────────────────────────────────
+    def creative_task(self) -> Task:
+        return Task(config=self.tasks_config["creative_task"])
 
     @crew
     def crew(self) -> Crew:

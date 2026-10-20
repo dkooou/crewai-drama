@@ -11,6 +11,4 @@ dependencies = [
 
 [project.scripts]
 nightshift = "nightshift_crew.main:run"
-nightshift-scene = "nightshift_crew.main:scene"
-nightshift-discuss = "nightshift_crew.main:discuss"
 nightshift-bot = "nightshift_crew.bot:main"
