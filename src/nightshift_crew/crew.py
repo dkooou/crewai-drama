@@ -97,13 +97,6 @@ class NightshiftCrew:
             tasks=self.tasks,
             process=Process.hierarchical,
             manager_llm="openrouter/anthropic/claude-opus-4-6",
-            memory=True,
-            embedder={
-                "provider": "google",
-                "config": {
-                    "model": "models/text-embedding-004",
-                    "api_key": os.getenv("GOOGLE_API_KEY"),
-                },
-            },
+            memory=False,
             verbose=True,
         )

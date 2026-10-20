@@ -74,7 +74,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(result[i:i + 4000])
     except Exception as e:
         logger.exception("Crew run failed")
-        await update.message.reply_text(f"❌ Failed: {e}")
+        err_msg = f"❌ Failed: {e}"
+        await update.message.reply_text(err_msg[:4000])
 
 
 def main():
