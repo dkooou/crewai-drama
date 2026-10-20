@@ -95,6 +95,6 @@ class NightshiftCrew:
             tasks=self.tasks,
             process=Process.hierarchical,
             manager_llm="openrouter/anthropic/claude-opus-4-6",
-            memory=True,
+            memory=False,
             verbose=True,
         )
