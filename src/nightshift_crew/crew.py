@@ -103,6 +103,7 @@ class NightshiftCrew:
                 "config": {
                     "model": "sentence-transformers/all-MiniLM-L6-v2",
                     "api_url": "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2",
+                    "api_key": os.getenv("CHROMA_HUGGINGFACE_API_KEY", ""),
                 },
             },
             verbose=True,
