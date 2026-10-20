@@ -7,11 +7,12 @@ creative_task:
     {prompt}
 
     Requirements:
-    - Output in English (unless the user explicitly asks for Chinese)
-    - If multiple approaches exist, compare them and recommend one
+    - Creative content (scripts, dialogue, scenes) MUST be in English — this is for North American TikTok audience
+    - All other output (analysis, commentary, recommendations, explanations, notes) MUST be in Chinese (中文)
+    - If multiple approaches exist, compare them and recommend one (用中文说明)
     - If writing a scene, use screenplay format (scene description + dialogue + action lines)
     - Dialogue must sound natural — like real people talking, not translated text
     - When referencing the Story Bible or prior episodes, cite specific details
   expected_output: >
-    Complete deliverable addressing the task above. In English.
+    Complete deliverable: creative content in English, all explanations and notes in Chinese (中文).
   agent: scene_writer
