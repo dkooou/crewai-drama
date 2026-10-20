@@ -1,0 +1,16 @@
+[project]
+name = "nightshift-crew"
+version = "0.1.0"
+description = "《夜班守则》AI创作团队 - CrewAI多模型协作"
+requires-python = ">=3.10"
+dependencies = [
+    "crewai[tools]>=0.100.0",
+    "python-dotenv>=1.0.0",
+    "python-telegram-bot>=21.0",
+]
+
+[project.scripts]
+nightshift = "nightshift_crew.main:run"
+nightshift-scene = "nightshift_crew.main:scene"
+nightshift-discuss = "nightshift_crew.main:discuss"
+nightshift-bot = "nightshift_crew.bot:main"

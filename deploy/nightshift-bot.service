@@ -1,0 +1,15 @@
+[Unit]
+Description=夜班守则 Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/nightshift-crew
+ExecStart=/root/nightshift-crew/.venv/bin/nightshift-bot
+Restart=always
+RestartSec=10
+EnvironmentFile=/root/nightshift-crew/.env
+
+[Install]
+WantedBy=multi-user.target
