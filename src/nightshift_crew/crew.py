@@ -97,14 +97,6 @@ class NightshiftCrew:
             tasks=self.tasks,
             process=Process.hierarchical,
             manager_llm="openrouter/anthropic/claude-opus-4-6",
-            memory=True,
-            embedder={
-                "provider": "huggingface",
-                "config": {
-                    "model": "sentence-transformers/all-MiniLM-L6-v2",
-                    "api_url": "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2",
-                    "api_key": os.getenv("CHROMA_HUGGINGFACE_API_KEY", ""),
-                },
-            },
+            memory=False,
             verbose=True,
         )
