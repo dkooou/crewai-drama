@@ -99,10 +99,10 @@ class NightshiftCrew:
             manager_llm="openrouter/anthropic/claude-opus-4-6",
             memory=True,
             embedder={
-                "provider": "openai",
+                "provider": "google",
                 "config": {
-                    "model": "text-embedding-3-small",
-                    "api_key": os.getenv("OPENAI_API_KEY"),
+                    "model": "models/text-embedding-004",
+                    "api_key": os.getenv("GOOGLE_API_KEY"),
                 },
             },
             verbose=True,
