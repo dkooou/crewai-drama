@@ -2,7 +2,7 @@
 name = "nightshift-crew"
 version = "0.2.0"
 description = "AI Short Drama Dream Team — 13-agent CrewAI production system"
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10"
 dependencies = [
     "crewai[tools]>=0.11.0",
     "crewai-tools>=0.14.0",
