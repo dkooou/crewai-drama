@@ -132,39 +132,39 @@ def _pick_ack(prompt: str) -> str:
     """Pick a context-aware acknowledgment based on the prompt."""
     lower = prompt.lower()
 
-    if any(w in lower for w in ["write", "scene", "script", "dialogue", "写", "剧本", "台词"]):
+    if any(w in lower for w in ["写", "剧本", "台词", "场景", "对话", "开场", "write", "scene"]):
         openers = [
-            "🎬 收到！正在召集编剧团队…",
-            "✍️ 明白，让我的写手们开始构思…",
-            "🎭 好的，Scene Writer 和 Hook Engineer 已经就位…",
+            "🎬 收到！编剧团队集合中…",
+            "✍️ 明白，让写手们开始构思…",
+            "🎭 好的，编剧和钩子工程师就位了…",
         ]
-    elif any(w in lower for w in ["trend", "热门", "流行", "tiktok", "抖音", "what's hot"]):
+    elif any(w in lower for w in ["趋势", "热门", "流行", "抖音", "快手", "爆款", "什么火", "trend"]):
         openers = [
             "🔍 收到！情报组正在扫描最新趋势…",
-            "📊 好的，让 Creative Intel 去调研…",
+            "📊 好的，让情报官去调研…",
             "🌐 明白，正在搜集最新数据…",
         ]
-    elif any(w in lower for w in ["check", "review", "logic", "审", "检查", "漏洞", "hole"]):
+    elif any(w in lower for w in ["检查", "审", "查", "漏洞", "逻辑", "合规", "review"]):
         openers = [
-            "🔎 收到！Logic Auditor 正在逐帧检查…",
-            "🧐 好的，质检团队已经开始审核…",
-            "✅ 明白，让审核组仔细过一遍…",
+            "🔎 收到！审计员正在逐帧检查…",
+            "🧐 好的，质检团队开始审核…",
+            "✅ 明白，让审核组过一遍…",
         ]
-    elif any(w in lower for w in ["design", "arc", "架构", "设计", "season", "规划"]):
+    elif any(w in lower for w in ["架构", "设计", "规划", "大纲", "策划", "plan", "arc"]):
         openers = [
-            "📐 收到！Story Architect 正在规划蓝图…",
-            "🏗️ 好的，架构师开始设计整体结构…",
+            "📐 收到！架构师正在规划蓝图…",
+            "🏗️ 好的，开始设计整体结构…",
             "🗺️ 明白，让我先画个全局地图…",
         ]
     else:
         openers = [
-            "👍 收到！团队正在协作中…",
-            "🧠 明白，13个专家开始讨论了…",
-            "⚡ 好的，Dream Team 已启动…",
-            "🎯 收到，正在处理你的需求…",
+            "👍 收到！团队协作中…",
+            "🧠 明白，专家们开始讨论了…",
+            "⚡ 好的，梦之队已启动…",
+            "🎯 收到，正在处理…",
         ]
 
-    return random.choice(openers) + "\n预计需要 3-5 分钟，请稍候 ☕"
+    return random.choice(openers) + "\n预计 3-5 分钟，稍等 ☕"
 
 
 @authorized
