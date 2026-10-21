@@ -30,8 +30,28 @@ if not _raw_ids:
 ALLOWED_USER_IDS = [int(x) for x in _raw_ids.split(",") if x.strip()]
 
 
+_META_PATTERNS = [
+    re.compile(r"^Now I have all the components.*?(?:\n|$)", re.IGNORECASE),
+    re.compile(r"^Let me compile.*?(?:\n|$)", re.IGNORECASE),
+    re.compile(r"^Here(?:'s| is) the (?:final|complete|comprehensive).*?(?:\n|$)", re.IGNORECASE),
+    re.compile(r"^I(?:'ll| will) now (?:compile|put together|assemble).*?(?:\n|$)", re.IGNORECASE),
+    re.compile(r"^Based on (?:our|the|my) (?:memory|research|analysis).*?(?:\n|$)", re.IGNORECASE),
+]
+
+
+def _strip_meta(text: str) -> str:
+    """Remove the manager's internal thinking that leaks into output."""
+    for pat in _META_PATTERNS:
+        text = pat.sub("", text)
+    text = re.sub(r"^[─━──]{2,}\s*$", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^---+\s*$", "", text, flags=re.MULTILINE)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
 def md_to_telegram_html(text: str) -> str:
     """Convert crew markdown output to Telegram-compatible HTML."""
+    text = _strip_meta(text)
     text = html.escape(text)
     text = re.sub(r"^#{1,3}\s+(.+)$", r"<b>\1</b>", text, flags=re.MULTILINE)
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
@@ -43,8 +63,8 @@ def md_to_telegram_html(text: str) -> str:
 
 
 def _split_into_chunks(text: str) -> list[str]:
-    """Split long text into chat-friendly chunks by section breaks."""
-    parts = re.split(r"\n{2,}(?=<b>)", text)
+    """Split long text into phone-friendly chunks (~1 screen each)."""
+    parts = re.split(r"\n\n+(?=<b>)", text)
 
     chunks: list[str] = []
     current = ""
@@ -52,19 +72,26 @@ def _split_into_chunks(text: str) -> list[str]:
         part = part.strip()
         if not part:
             continue
-        if len(current) + len(part) + 2 > 3000:
-            if current:
-                chunks.append(current.strip())
+        if current and len(current) + len(part) + 2 > 900:
+            chunks.append(current.strip())
             current = part
         else:
             current = current + "\n\n" + part if current else part
     if current.strip():
         chunks.append(current.strip())
 
-    if not chunks:
-        chunks = [text]
+    final: list[str] = []
+    for chunk in (chunks or [text]):
+        while len(chunk) > 4000:
+            cut = chunk[:4000].rfind("\n")
+            if cut < 200:
+                cut = 4000
+            final.append(chunk[:cut].strip())
+            chunk = chunk[cut:].strip()
+        if chunk:
+            final.append(chunk)
 
-    return chunks
+    return final or [text]
 
 
 def authorized(func):
