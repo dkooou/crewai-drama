@@ -86,6 +86,12 @@ class NightshiftCrew:
     def creative_task(self) -> Task:
         return Task(config=self.tasks_config["creative_task"])
 
+    # ── Manager ─────────────────────────────────────────
+
+    @agent
+    def sunny(self) -> Agent:
+        return Agent(config=self.agents_config["sunny"])
+
     # ── Crew Assembly ───────────────────────────────────
 
     @crew
@@ -94,7 +100,7 @@ class NightshiftCrew:
             agents=self.agents,
             tasks=self.tasks,
             process=Process.hierarchical,
-            manager_llm="openrouter/anthropic/claude-opus-4-6",
+            manager_agent=self.sunny(),
             memory=True,
             embedder={
                 "provider": "ollama",
