@@ -1,8 +1,10 @@
 """Telegram Bot — trigger the dream team from your phone."""
 
 import asyncio
+import html
 import logging
 import os
+import re
 
 from dotenv import load_dotenv
 from telegram import Update
@@ -24,6 +26,18 @@ _raw_ids = os.environ.get("ALLOWED_USER_IDS", "").strip()
 if not _raw_ids:
     raise SystemExit("ALLOWED_USER_IDS not set. Add your Telegram user ID to .env.")
 ALLOWED_USER_IDS = [int(x) for x in _raw_ids.split(",") if x.strip()]
+
+
+def md_to_telegram_html(text: str) -> str:
+    """Convert crew markdown output to Telegram-compatible HTML."""
+    text = html.escape(text)
+    text = re.sub(r"^#{1,3}\s+(.+)$", r"<b>\1</b>", text, flags=re.MULTILINE)
+    text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
+    text = re.sub(r"\*(.+?)\*", r"<i>\1</i>", text)
+    text = re.sub(r"\|[-\s|]+\|", "", text)
+    text = re.sub(r"\|(.+?)\|", lambda m: "  •  ".join(c.strip() for c in m.group(1).split("|") if c.strip()), text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 def authorized(func):
@@ -70,8 +84,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         result = await run_crew_async(prompt)
-        for i in range(0, len(result), 4000):
-            await update.message.reply_text(result[i:i + 4000])
+        formatted = md_to_telegram_html(result)
+        for i in range(0, len(formatted), 4000):
+            await update.message.reply_text(formatted[i:i + 4000], parse_mode="HTML")
     except Exception as e:
         logger.exception("Crew run failed")
         err_msg = f"❌ Failed: {e}"

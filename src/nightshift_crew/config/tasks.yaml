@@ -13,6 +13,14 @@ creative_task:
     - If writing a scene, use screenplay format (scene description + dialogue + action lines)
     - Dialogue must sound natural — like real people talking, not translated text
     - When referencing the Story Bible or prior episodes, cite specific details
+
+    Formatting rules (this will be read in a chat app):
+    - NEVER use markdown tables (|---|). Use numbered lists or bullet points instead
+    - NEVER use markdown headers (#, ##, ###). Use bold text for section titles
+    - Use short paragraphs with blank lines between them
+    - Use bullet points (- or •) for lists
+    - Keep it scannable on a phone screen
   expected_output: >
     Complete deliverable: creative content in English, all explanations and notes in Chinese (中文).
+    Format for mobile chat — no tables, no markdown headers, short paragraphs.
   agent: scene_writer
