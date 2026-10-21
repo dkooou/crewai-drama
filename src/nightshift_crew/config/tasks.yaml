@@ -14,13 +14,21 @@ creative_task:
     - Dialogue must sound natural — like real people talking, not translated text
     - When referencing the Story Bible or prior episodes, cite specific details
 
-    Formatting rules (this will be read in a chat app):
+    Length & structure rules (this will be read on a phone screen):
+    - Keep total output under 800 words. Ruthlessly cut filler — every sentence must earn its place
+    - Lead with a 2-3 sentence TL;DR (bolded, labeled **总结**)
+    - Use ── or blank lines to separate major sections so they can be split into separate chat bubbles
+    - Each section should be self-contained and under 200 words
+
+    Formatting rules:
     - NEVER use markdown tables (|---|). Use numbered lists or bullet points instead
-    - NEVER use markdown headers (#, ##, ###). Use bold text for section titles
+    - NEVER use markdown headers (#, ##, ###). Use **bold text** for section titles
     - Use short paragraphs with blank lines between them
     - Use bullet points (- or •) for lists
+    - No "---" horizontal rules — use a blank line instead
     - Keep it scannable on a phone screen
   expected_output: >
     Complete deliverable: creative content in English, all explanations and notes in Chinese (中文).
-    Format for mobile chat — no tables, no markdown headers, short paragraphs.
+    Start with a **总结** (2-3 sentences). Under 800 words total.
+    Format for mobile chat — no tables, no markdown headers, short paragraphs, clear section breaks.
   agent: scene_writer

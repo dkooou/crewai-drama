@@ -42,6 +42,31 @@ def md_to_telegram_html(text: str) -> str:
     return text.strip()
 
 
+def _split_into_chunks(text: str) -> list[str]:
+    """Split long text into chat-friendly chunks by section breaks."""
+    parts = re.split(r"\n{2,}(?=<b>)", text)
+
+    chunks: list[str] = []
+    current = ""
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        if len(current) + len(part) + 2 > 3000:
+            if current:
+                chunks.append(current.strip())
+            current = part
+        else:
+            current = current + "\n\n" + part if current else part
+    if current.strip():
+        chunks.append(current.strip())
+
+    if not chunks:
+        chunks = [text]
+
+    return chunks
+
+
 def authorized(func):
     async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user = update.effective_user
@@ -126,10 +151,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         result = await run_crew_async(prompt)
-        await update.message.chat.send_action(ChatAction.TYPING)
         formatted = md_to_telegram_html(result)
-        for i in range(0, len(formatted), 4000):
-            await update.message.reply_text(formatted[i:i + 4000], parse_mode="HTML")
+        chunks = _split_into_chunks(formatted)
+        for i, chunk in enumerate(chunks):
+            await update.message.chat.send_action(ChatAction.TYPING)
+            if i > 0:
+                await asyncio.sleep(0.8)
+            await update.message.reply_text(chunk, parse_mode="HTML")
     except Exception as e:
         logger.exception("Crew run failed")
         err_msg = f"❌ 出错了: {e}"
