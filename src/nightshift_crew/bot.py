@@ -72,7 +72,7 @@ def _split_into_chunks(text: str) -> list[str]:
         part = part.strip()
         if not part:
             continue
-        if current and len(current) + len(part) + 2 > 900:
+        if current and len(current) + len(part) + 2 > 400:
             chunks.append(current.strip())
             current = part
         else:
@@ -118,13 +118,14 @@ async def run_crew_async(prompt: str) -> str:
 @authorized
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "🎬 Dream Team — 13 AI Agents\n\n"
-        "Send any message to start. Examples:\n"
-        "• Design the season arc for a rule-horror office series\n"
-        "• Write the opening scene: she finds the lock changed\n"
-        "• Check E1-E5 for logic holes\n"
-        "• What's trending in horror on TikTok this week?\n\n"
-        "/help for help"
+        "🎬 梦之队 — 13位AI短剧专家\n\n"
+        "直接发消息就行，比如：\n"
+        "• 写一个悬疑短剧的开场场景\n"
+        "• 国内AI短剧目前什么阶段？\n"
+        "• 帮我检查前5集的逻辑漏洞\n"
+        "• 抖音上最近什么类型火？\n\n"
+        "也可以随便聊天 ☕\n"
+        "/help 查看帮助"
     )
 
 
@@ -155,6 +156,12 @@ def _pick_ack(prompt: str) -> str:
             "📐 收到！架构师正在规划蓝图…",
             "🏗️ 好的，开始设计整体结构…",
             "🗺️ 明白，让我先画个全局地图…",
+        ]
+    elif any(w in lower for w in ["什么阶段", "怎么做", "成本", "变现", "案例", "工具", "团队", "行业", "市场", "调研", "分析"]):
+        openers = [
+            "📋 收到！让我整理一份行业简报…",
+            "🔬 好的，情报组正在梳理…",
+            "💡 明白，帮你做个快速调研…",
         ]
     else:
         openers = [
