@@ -96,11 +96,13 @@ class NightshiftCrew:
 
     @crew
     def crew(self) -> Crew:
+        manager = self.sunny()
+        workers = [a for a in self.agents if a.role != manager.role]
         return Crew(
-            agents=self.agents,
+            agents=workers,
             tasks=self.tasks,
             process=Process.hierarchical,
-            manager_agent=self.sunny(),
+            manager_agent=manager,
             memory=True,
             embedder={
                 "provider": "ollama",
